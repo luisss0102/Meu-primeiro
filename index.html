@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Relembrar</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#home">Criador</a></li>
+                <li><a href="#about">Sobre</a></li>
+                <li><a href="#gallery">Galeria</a></li>
+                <li><a href="#contact">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home">
+        <div class="welcome">
+            <h1>Prazer estar de volta</h1>
+            <p>Bem-vindo ao nosso site! Aqui você encontra inspiração e estilo.</p>
+        </div>
+    </section>
+    <section id="gallery">
+        <h2>Galeria</h2>
+        <div class="carousel">
+            <button class="prev" aria-label="Imagem anterior">&#10094;</button>
+            <div class="carousel-track-container">
+                <ul class="carousel-track">
+                    <li class="carousel-slide current">
+                        <img src="img/273980.jpg" alt="Paisagem incrível" class="gallery-img">
+                    </li>
+                    <li class="carousel-slide">
+                        <img src="img/lambo.jpg" alt="Lamborghini Huracan" class="gallery-img">
+                    </li>
+                    <li class="carousel-slide">
+                        <img src="img/urus.jpg" alt="Lamborghini urus" class="gallery-img">
+                    </li>
+                    <li class="carousel-slide">
+                        <img src="img/antiga.jpg" alt="Lamborghini countach" class="gallery-img">
+                    </li>
+                    <li class="carousel-slide">
+                        <img src="img/lambo2.jpeg" alt="Lamborghini Revueldo" class="gallery-img">
+                    </li>
+                    <li class="carousel-slide">
+                        <img src="img/Lamborghini-Aventador-SVJ-1.jpg" alt="Lamborghini Aventador SVJ" class="gallery-img">
+                    </li>
+                </ul>
+            </div>
+            <button class="next" aria-label="Próxima imagem">&#10095;</button>
+        </div>
+    </section>
+    
+    <section id="about">
+        <h2>Sobre</h2>
+        <p>Este site é dedicado a destacar beleza, inovação dos carros da Lamborghini.</p>
+    </section>
+
+    <section id="contact">
+        <h2>Contato</h2>
+        <form action="#">
+            <label for="name">Nome:</label>
+            <input type="text" id="name" name="name" placeholder="Digite seu nome">
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Digite seu email">
+            
+            <label for="message">Mensagem:</label>
+            <textarea id="message" name="message" placeholder="Digite sua mensagem"></textarea>
+            
+            <button type="submit">Enviar</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Relembrar. Todos os direitos reservados.</p>
+    </footer>
+</body>
+<script>
+    let startX = 0;
+    let isDragging = false;
+
+    track.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+    });
+
+    track.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        const currentX = e.touches[0].clientX;
+        const diff = startX - currentX;
+
+        if (diff > 50) {
+            const currentSlide = track.querySelector('.current');
+            const nextSlide = currentSlide.nextElementSibling;
+            if (nextSlide) {
+                moveToSlide(track, currentSlide, nextSlide);
+            }
+            isDragging = false;
+        } else if (diff < -50) {
+            const currentSlide = track.querySelector('.current');
+            const prevSlide = currentSlide.previousElementSibling;
+            if (prevSlide) {
+                moveToSlide(track, currentSlide, prevSlide);
+            }
+            isDragging = false;
+        }
+    });
+
+    track.addEventListener('touchend', () => {
+        isDragging = false;
+    });
+</script>
+
+<script>
+    
+    const track = document.querySelector('.carousel-track');
+    const slides = Array.from(track.children);
+    const nextButton = document.querySelector('.next');
+    const prevButton = document.querySelector('.prev');
+    const slideWidth = slides[0].getBoundingClientRect().width;
+
+    // Arrange slides next to one another
+    const setSlidePosition = (slide, index) => {
+        slide.style.left = slideWidth * index + 'px';
+    };
+    slides.forEach(setSlidePosition);
+
+    const moveToSlide = (track, currentSlide, targetSlide) => {
+        track.style.transform = 'translateX(-' + targetSlide.style.left + ')';
+        currentSlide.classList.remove('current');
+        targetSlide.classList.add('current');
+    };
+
+    // Click next button
+    nextButton.addEventListener('click', () => {
+        const currentSlide = track.querySelector('.current');
+        const nextSlide = currentSlide.nextElementSibling;
+
+        if (nextSlide) {
+            moveToSlide(track, currentSlide, nextSlide);
+        }
+    });
+
+    // Click prev button
+    prevButton.addEventListener('click', () => {
+        const currentSlide = track.querySelector('.current');
+        const prevSlide = currentSlide.previousElementSibling;
+
+        if (prevSlide) {
+            moveToSlide(track, currentSlide, prevSlide);
+        }
+    });
+</script>
+
+</html>
